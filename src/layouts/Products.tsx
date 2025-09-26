@@ -5,10 +5,10 @@ import BaseCard from "../components/BaseCard";
 import { fetchProducts } from "../query/api";
 import { Product } from "../types/product";
 
-export default function Products() {
+export default function Products({ searchTerm = "" }: { searchTerm?: string }) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
+    queryKey: ["products", searchTerm],
+    queryFn: () => fetchProducts(searchTerm),
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -18,7 +18,7 @@ export default function Products() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {products.map((p: Product) => (
-        <BaseCard key={p.id} product={p} />
+        <BaseCard key={p.id} product={p} highlightTerm={searchTerm} />
       ))}
     </div>
   );

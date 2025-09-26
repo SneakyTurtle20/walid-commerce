@@ -1,15 +1,48 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
 export default function BaseNavbarSearch() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [value, setValue] = useState(searchParams.get("q") ?? "");
+
+  useEffect(() => {
+    setValue(searchParams.get("q") ?? "");
+  }, [searchParams]);
+
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      const currentQ = searchParams.get("q") ?? "";
+      if (currentQ === value) return;
+      const params = new URLSearchParams(Array.from(searchParams.entries()));
+      if (value) {
+        params.set("q", value);
+      } else {
+        params.delete("q");
+      }
+      const qs = params.toString();
+      router.push(qs ? `/?${qs}` : "/");
+    }, 400);
+    return () => clearTimeout(handle);
+  }, [value, router, searchParams]);
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">W Commerce</a>
       </div>
       <div className="flex">
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-bordered w-24 md:w-auto"
-        />
+        <div className="join">
+          <input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            type="text"
+            placeholder="Search products..."
+            className="input input-bordered join-item w-24 md:w-auto"
+          />
+        </div>
       </div>
     </div>
   );
