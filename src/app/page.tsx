@@ -1,11 +1,11 @@
-import BaseCard from "../app/components/BaseCard";
-import { dehydrate, QueryClient } from "@tanstack/react-query";
-
-async function fetchProducts() {
-  // Fetch data on the server
-  const res = await fetch("https://dummyjson.com/products");
-  return res.json();
-}
+import BaseNavbarSearch from "../components/BaseNavbarSearch";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import Products from "layouts/Products";
+import { fetchProducts } from "../query/api";
 
 export default async function Home() {
   const queryClient = new QueryClient();
@@ -14,5 +14,12 @@ export default async function Home() {
     queryFn: fetchProducts,
   });
   const dehydratedState = dehydrate(queryClient);
-  return <BaseCard initialData={dehydratedState} />;
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <BaseNavbarSearch />
+      <div className="p-8">
+        <Products />
+      </div>
+    </HydrationBoundary>
+  );
 }
