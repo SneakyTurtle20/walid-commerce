@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import BaseCard from "../components/BaseCard";
 import { fetchProducts } from "../query/api";
-import { Product } from "types/product";
+import { Product } from "../types/product";
 
 export default function Products() {
   const { data, isLoading, isError, error } = useQuery({
