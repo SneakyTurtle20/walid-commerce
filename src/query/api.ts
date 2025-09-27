@@ -1,7 +1,32 @@
-export async function fetchProducts(searchTerm?: string) {
-  const url = searchTerm && searchTerm.trim().length > 0
-    ? `https://dummyjson.com/products/search?q=${encodeURIComponent(searchTerm)}&limit=10`
-    : "https://dummyjson.com/products?limit=10";
-  const response = await fetch(url);
-  return response.json();
+import { Product } from "src/types/product";
+import { toast, Bounce } from "react-toastify";
+
+export async function fetchProducts(
+  searchTerm?: string
+): Promise<{ products: [] }> {
+  const url =
+    searchTerm && searchTerm.trim().length > 0
+      ? `https://dummyjson.com/products/search?q=${encodeURIComponent(
+          searchTerm
+        )}&limit=10`
+      : "https://dummyjson.com/products?limit=10";
+  try {
+    const response = await fetch(url);
+    return response.json();
+  } catch (e) {
+    toast.error("Products not found", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
+    return {
+      products: [],
+    };
+  }
 }

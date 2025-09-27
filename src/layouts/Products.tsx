@@ -18,7 +18,7 @@ export default function Products({ searchTerm = "" }: { searchTerm?: string }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {products.map((p: Product) => (
-        <BaseCard key={p.id} product={p} highlightTerm={searchTerm} />
+        <BaseCard key={p.id} product={p} />
       ))}
     </div>
   );
