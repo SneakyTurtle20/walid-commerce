@@ -1,26 +1,34 @@
 import BaseNavbarSearch from "../components/BaseNavbarSearch";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import Products from "../layouts/Products";
-import { fetchProducts } from "../query/api";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { fetchCategories, fetchProducts } from "../query/api";
+import BaseDrawer from "src/components/BaseDrawer";
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams: { q?: string; category?: string };
 }) {
   const queryClient = new QueryClient();
-  const searchTerm = typeof searchParams?.q === "string" ? searchParams.q : undefined;
+  const { q, category } = await searchParams;
+  const searchTerm = typeof q === "string" ? q : undefined;
+  const categorySlug = typeof category === "string" ? category : undefined;
   await queryClient.prefetchQuery({
-    queryKey: ["products", searchTerm ?? ""],
-    queryFn: () => fetchProducts(searchTerm),
+    queryKey: ["products", searchTerm ?? "", categorySlug ?? ""],
+    queryFn: () => fetchProducts(searchTerm, categorySlug),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ["categories"],
+    queryFn: () => fetchCategories(),
   });
   const dehydratedState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydratedState}>
       <BaseNavbarSearch />
-      <div className="p-8">
-        <Products searchTerm={searchTerm ?? ""} />
-      </div>
+      <BaseDrawer searchTerm={searchTerm} categorySlug={categorySlug} />
     </HydrationBoundary>
   );
 }

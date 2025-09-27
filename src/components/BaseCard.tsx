@@ -16,7 +16,7 @@ export default function BaseCard({ product }: { product: Product }) {
         <p className="line-clamp-3">{product.description}</p>
         <div className="card-actions justify-between items-center">
           <span className="font-semibold">${product.price}</span>
-          <button className="btn btn-primary">Buy Now</button>
+          <button className="btn btn-primary">See Details</button>
         </div>
       </div>
     </div>

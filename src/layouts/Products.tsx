@@ -5,10 +5,10 @@ import BaseCard from "../components/BaseCard";
 import { fetchProducts } from "../query/api";
 import { Product } from "../types/product";
 
-export default function Products({ searchTerm = "" }: { searchTerm?: string }) {
+export default function Products({ searchTerm = "", categorySlug }: { searchTerm?: string; categorySlug?: string }) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["products", searchTerm],
-    queryFn: () => fetchProducts(searchTerm),
+    queryKey: ["products", searchTerm, categorySlug ?? ""],
+    queryFn: () => fetchProducts(searchTerm, categorySlug),
   });
 
   if (isLoading) return <div>Loading...</div>;
