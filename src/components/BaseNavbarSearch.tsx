@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import BaseSelect from "./BaseSelect";
+import { SortSelectOption } from "src/types/sortOption";
 
 export default function BaseNavbarSearch() {
   const router = useRouter();
@@ -33,7 +35,7 @@ export default function BaseNavbarSearch() {
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">W Commerce</a>
       </div>
-      <div className="flex">
+      <div className="flex gap-2">
         <div className="join">
           <input
             value={value}
@@ -42,6 +44,9 @@ export default function BaseNavbarSearch() {
             placeholder="Search products..."
             className="input input-bordered join-item w-24 md:w-auto"
           />
+        </div>
+        <div className="join">
+          <BaseSelect selectOptions={SortSelectOption} />
         </div>
       </div>
     </div>
