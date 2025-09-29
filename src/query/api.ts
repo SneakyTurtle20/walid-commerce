@@ -3,9 +3,12 @@ import { toast, Bounce } from "react-toastify";
 
 export async function fetchProducts(
   searchTerm?: string,
-  categorySlug?: string
-): Promise<{ products: [] }> {
-  const url =
+  categorySlug?: string,
+  sortBy?: string,
+  order?: "asc" | "desc"
+): Promise<{ products: Product[] }> {
+  // Build base URL depending on search or category
+  let url =
     searchTerm && searchTerm.trim().length > 0
       ? `https://dummyjson.com/products/search?q=${encodeURIComponent(
           searchTerm
@@ -15,6 +18,14 @@ export async function fetchProducts(
           categorySlug
         )}`
       : "https://dummyjson.com/products?limit=10";
+
+  const hasQuery = url.includes("?");
+  console.log(sortBy, order);
+  if (sortBy && order) {
+    url += `${hasQuery ? "&" : "?"}sortBy=${encodeURIComponent(
+      sortBy
+    )}&order=${encodeURIComponent(order)}`;
+  }
   try {
     const response = await fetch(url);
     return response.json();
