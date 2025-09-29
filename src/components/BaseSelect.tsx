@@ -52,13 +52,6 @@ export default function BaseSelect({
           </option>
         ))}
       </select>
-      <button
-        type="button"
-        className="btn"
-        onClick={() => applyParams({ sortBy: undefined, order: undefined })}
-      >
-        Reset
-      </button>
     </div>
   );
 }
