@@ -24,6 +24,10 @@ export default function BaseNavbarSearch() {
       } else {
         params.delete("q");
       }
+      params.delete("page");
+      params.delete("sortBy");
+      params.delete("order");
+      params.delete("category");
       const qs = params.toString();
       router.push(qs ? `/?${qs}` : "/");
     }, 400);

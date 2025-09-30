@@ -23,6 +23,8 @@ export default function BaseSelect({
         params.set(key, String(value));
       }
     });
+    params.delete("page");
+    params.delete("q");
     const qs = params.toString();
     router.replace(qs ? `/?${qs}` : "/");
   };

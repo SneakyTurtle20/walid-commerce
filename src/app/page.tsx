@@ -15,15 +15,18 @@ export default async function Home({
     category?: string;
     sortBy?: string;
     order?: string;
+    page?: string;
   };
 }) {
   const queryClient = new QueryClient();
-  const { q, category, sortBy, order } = await searchParams;
+  const { q, category, sortBy, order, page } = await searchParams;
   const searchTerm = typeof q === "string" ? q : undefined;
   const categorySlug = typeof category === "string" ? category : undefined;
   const sortByParam = typeof sortBy === "string" ? sortBy : undefined;
   const orderParam =
     typeof order === "string" ? (order as "asc" | "desc") : undefined;
+  const pageParam = typeof page === "string" ? Math.max(1, parseInt(page, 10) || 1) : 1;
+  const limitParam = 10;
   await queryClient.prefetchQuery({
     queryKey: [
       "products",
@@ -31,9 +34,18 @@ export default async function Home({
       categorySlug ?? "",
       sortByParam ?? "",
       orderParam ?? "",
+      pageParam,
+      limitParam,
     ],
     queryFn: () =>
-      fetchProducts(searchTerm, categorySlug, sortByParam, orderParam),
+      fetchProducts(
+        searchTerm,
+        categorySlug,
+        sortByParam,
+        orderParam,
+        pageParam,
+        limitParam
+      ),
   });
   await queryClient.prefetchQuery({
     queryKey: ["categories"],
