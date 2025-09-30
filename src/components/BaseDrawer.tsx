@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Categories from "src/layouts/Categories";
 import Products from "src/layouts/Products";
 import { fetchCategories } from "src/query/api";
+import BaseSkeleton from "./BaseSkeleton";
 
 export default function BaseDrawer({
   searchTerm,
@@ -17,7 +18,7 @@ export default function BaseDrawer({
     queryFn: () => fetchCategories(),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <BaseSkeleton />;
   if (isError) return <div>Error: {error?.message}</div>;
 
   return (

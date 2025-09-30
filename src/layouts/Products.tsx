@@ -6,15 +6,30 @@ import BasePagination from "../components/BasePagination";
 import BaseCard from "../components/BaseCard";
 import { fetchProducts } from "../query/api";
 import { Product } from "../types/product";
+import BaseSkeleton from "src/components/BaseSkeleton";
 
-export default function Products({ searchTerm = "", categorySlug }: { searchTerm?: string; categorySlug?: string }) {
+export default function Products({
+  searchTerm = "",
+  categorySlug,
+}: {
+  searchTerm?: string;
+  categorySlug?: string;
+}) {
   const searchParams = useSearchParams();
   const sortBy = searchParams.get("sortBy") ?? "";
   const order = searchParams.get("order") ?? "";
   const page = parseInt(searchParams.get("page") ?? "1", 10) || 1;
   const limit = 10;
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["products", searchTerm, categorySlug ?? "", sortBy, order, page, limit],
+    queryKey: [
+      "products",
+      searchTerm,
+      categorySlug ?? "",
+      sortBy,
+      order,
+      page,
+      limit,
+    ],
     queryFn: () =>
       fetchProducts(
         searchTerm,
@@ -26,7 +41,7 @@ export default function Products({ searchTerm = "", categorySlug }: { searchTerm
       ),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <BaseSkeleton />;
   if (isError) return <div>Error: {error?.message}</div>;
 
   const products = data?.products ?? [];
