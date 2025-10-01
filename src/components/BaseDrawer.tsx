@@ -1,25 +1,20 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import Categories from "src/layouts/Categories";
 import Products from "src/layouts/Products";
-import { fetchCategories } from "src/query/api";
+import { Category } from "src/types/product";
 import BaseSkeleton from "./BaseSkeleton";
 
 export default function BaseDrawer({
   searchTerm,
   categorySlug,
+  categories,
 }: {
   searchTerm?: string;
   categorySlug?: string;
+  categories?: Category[];
 }) {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => fetchCategories(),
-  });
-
-  if (isLoading) return <BaseSkeleton />;
-  if (isError) return <div>Error: {error?.message}</div>;
+  // categories are now provided by the server
 
   return (
     <div className="drawer lg:drawer-open">
@@ -29,11 +24,7 @@ export default function BaseDrawer({
           <Products searchTerm={searchTerm ?? ""} categorySlug={categorySlug} />
         </div>
       </div>
-      <Categories
-        categorySlug={categorySlug}
-        searchTerm={searchTerm}
-        data={data}
-      />
+      <Categories categorySlug={categorySlug} searchTerm={searchTerm} data={categories} />
     </div>
   );
 }

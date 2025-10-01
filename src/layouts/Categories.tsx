@@ -31,8 +31,10 @@ export default function Categories({
       >
         Categories
       </label>
-      <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 gap-2">
+      <ul className="menu bg-white text-base-content min-h-full w-80 p-4 gap-2">
+        {data && data.length === 0 && <div>No categories found.</div>}
         {data &&
+          data.length > 0 &&
           data.map((category: Category) => (
             <label key={category.slug} className="flex items-center gap-2">
               <input

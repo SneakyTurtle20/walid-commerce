@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import BaseSelect from "./BaseSelect";
 import { SortSelectOption } from "src/types/sortOption";
 
-export default function BaseNavbarSearch() {
+export default function BaseNavbarSearch({ hideControls = false }: { hideControls?: boolean }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState(searchParams.get("q") ?? "");
@@ -39,20 +39,22 @@ export default function BaseNavbarSearch() {
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">W Commerce</a>
       </div>
-      <div className="flex gap-2">
-        <div className="join">
-          <input
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            type="text"
-            placeholder="Search products..."
-            className="input input-bordered join-item w-24 md:w-auto"
-          />
+      {!hideControls && (
+        <div className="flex gap-2">
+          <div className="join">
+            <input
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              type="text"
+              placeholder="Search products..."
+              className="input input-bordered join-item w-24 md:w-auto"
+            />
+          </div>
+          <div className="join">
+            <BaseSelect selectOptions={SortSelectOption} />
+          </div>
         </div>
-        <div className="join">
-          <BaseSelect selectOptions={SortSelectOption} />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

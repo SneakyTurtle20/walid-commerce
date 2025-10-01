@@ -48,14 +48,19 @@ export default function Products({
   const total = data?.total ?? 0;
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((p: Product) => (
-          <BaseCard key={p.id} product={p} />
-        ))}
-      </div>
-      <div className="mt-6 flex justify-center">
-        <BasePagination total={total} page={page} limit={limit} />
-      </div>
+      {products.length > 0 && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {products.map((p: Product) => (
+              <BaseCard key={p.id} product={p} />
+            ))}
+          </div>
+          <div className="mt-6 flex justify-center">
+            <BasePagination total={total} page={page} limit={limit} />
+          </div>
+        </>
+      )}
+      {products.length === 0 && <div>No products found.</div>}
     </>
   );
 }
