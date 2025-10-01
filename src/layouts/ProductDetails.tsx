@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductDetails } from "src/query/api";
+import { Review } from "src/types/product";
 
 export default function ProductDetails() {
   const searchParams = useSearchParams();
@@ -56,14 +57,16 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      {data.reviews.length === 0 && <div className="mt-10">No reviews yet.</div>}
+      {data.reviews.length === 0 && (
+        <div className="mt-10">No reviews yet.</div>
+      )}
       {Array.isArray(data.reviews) && data.reviews.length > 0 && (
         <div className="mt-10">
           <h2 className="text-xl font-semibold mb-4">
             Reviews ({data.reviews.length})
           </h2>
           <div className="space-y-3">
-            {data.reviews.slice(0, 10).map((rev: any, idx: number) => {
+            {data.reviews.slice(0, 10).map((rev: Review, idx: number) => {
               const initials = (rev.reviewerName || "Anonymous")
                 .split(" ")
                 .map((s: string) => s[0])

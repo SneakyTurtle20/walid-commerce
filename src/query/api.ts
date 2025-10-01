@@ -44,7 +44,7 @@ export async function fetchProducts(
       },
     });
     return response.json();
-  } catch (e) {
+  } catch {
     toast.error("Products not found", {
       position: "bottom-left",
       autoClose: 5000,
@@ -71,7 +71,7 @@ export async function fetchCategories(): Promise<Category[]> {
       },
     });
     return response.json();
-  } catch (e) {
+  } catch {
     toast.error("Categories not found", {
       position: "bottom-left",
       autoClose: 5000,
@@ -96,7 +96,7 @@ export async function fetchProductDetails(id: number): Promise<Product | null> {
       },
     });
     return response.json();
-  } catch (e) {
+  } catch {
     toast.error("Product not found", {
       position: "bottom-left",
       autoClose: 5000,

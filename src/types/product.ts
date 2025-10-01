@@ -16,7 +16,7 @@ export type Category = {
   url: string;
 };
 
-type Review = {
+export type Review = {
   comment: string;
   rating: number;
   reviewerEmail: string;
