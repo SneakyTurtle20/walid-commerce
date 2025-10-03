@@ -40,8 +40,11 @@ export default function BasePagination({ total, page, limit }: { total: number; 
 
   return (
     <div className="join">
-      <button className="join-item btn" disabled={page <= 1} onClick={() => goToPage(1)}>
-        «
+      <button className="join-item btn items-center" disabled={page <= 1} onClick={() => goToPage(1)}>
+        Start
+      </button>
+      <button className="join-item btn" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
+        {'<'}
       </button>
       {pages.map((p, idx) =>
         p === "ellipsis" ? (
@@ -56,8 +59,11 @@ export default function BasePagination({ total, page, limit }: { total: number; 
           </button>
         )
       )}
-      <button className="join-item btn" disabled={page >= totalPages} onClick={() => goToPage(totalPages)}>
-        »
+      <button className="join-item btn" disabled={page >= totalPages} onClick={() => goToPage(page + 1)}>
+        {'>'}
+      </button>
+      <button className="join-item btn items-center" disabled={page >= totalPages} onClick={() => goToPage(totalPages)}>
+        End
       </button>
     </div>
   );

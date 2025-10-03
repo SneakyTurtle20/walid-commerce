@@ -1,14 +1,15 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductDetails } from "src/query/api";
 import { Review } from "src/types/product";
 
 export default function ProductDetails() {
-  const searchParams = useSearchParams();
+  const params = useParams();
   const router = useRouter();
-  const productId = parseInt(searchParams.get("productId") ?? "", 10);
+  const productId = parseInt(params.id as string, 10);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["product", productId],
@@ -21,9 +22,7 @@ export default function ProductDetails() {
   if (isError || !data) return <div>Product not found</div>;
 
   const goBack = () => {
-    const params = new URLSearchParams(Array.from(searchParams.entries()));
-    params.delete("productId");
-    router.push(params.toString() ? `/?${params.toString()}` : "/");
+    router.push("/");
   };
 
   return (
@@ -32,7 +31,16 @@ export default function ProductDetails() {
         ← Back
       </button>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <img src={data.thumbnail} alt={data.title} className="w-full rounded" />
+        <div className="relative w-full aspect-square">
+          <Image
+            src={data.thumbnail}
+            alt={data.title}
+            fill
+            className="object-cover rounded"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+          />
+        </div>
         <div>
           <h1 className="text-2xl font-bold mb-2">{data.title}</h1>
           <p className="mb-4 text-sm opacity-80">{data.description}</p>
@@ -50,7 +58,15 @@ export default function ProductDetails() {
           {Array.isArray(data.images) && data.images.length > 0 && (
             <div className="grid grid-cols-4 gap-2">
               {data.images.slice(0, 8).map((src: string, idx: number) => (
-                <img key={idx} src={src} className="w-full rounded" />
+                <div key={idx} className="relative w-full aspect-square">
+                  <Image
+                    src={src}
+                    alt={`${data.title} - Image ${idx + 1}`}
+                    fill
+                    className="object-cover rounded"
+                    sizes="(max-width: 768px) 25vw, 12.5vw"
+                  />
+                </div>
               ))}
             </div>
           )}

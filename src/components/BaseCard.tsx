@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import { Product } from "../types/product";
 
 export default function BaseCard({ product }: { product: Product }) {
@@ -13,17 +14,17 @@ export default function BaseCard({ product }: { product: Product }) {
     params.delete("category");
     params.delete("sortBy");
     params.delete("order");
-    params.set("productId", String(product.id));
-    router.push(`/?${params.toString()}`);
+    router.push(`/product/${product.id}`);
   };
   return (
     <div key={product.id} className="card bg-base-100 w-96 shadow-sm">
-      <figure>
-        <img
+      <figure className="relative h-60 w-full">
+        <Image
           src={product.thumbnail}
           alt={product.title}
-          className="h-60 w-full object-cover"
-          loading="lazy"
+          className="object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, 384px"
         />
       </figure>
       <div className="card-body">
